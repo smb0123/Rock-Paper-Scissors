@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import Button from './Button';
 import HandButton from './HandButton';
 import HandIcon from './HandIcon';
 import { compareHand, generateRandomHand } from './utils';
-import { useState} from 'react';
+
+const INITIAL_VALUE = 'rock';
 
 function getResult(me, other) {
   const comparison = compareHand(me, other);
@@ -12,29 +14,33 @@ function getResult(me, other) {
 }
 
 function App() {
-  // hand와 otherHand를 state로 바꿔 주세요
-  const [hand, setHand] = useState('rock');
-  const [otherHand, setOtherHand] = useState('rock');
+  const [hand, setHand] = useState(INITIAL_VALUE);
+  const [otherHand, setOtherHand] = useState(INITIAL_VALUE);
+  const [gameHistory, setGameHistory] = useState([]);
 
   const handleButtonClick = (nextHand) => {
+    const nextOtherHand = generateRandomHand();
+    const nextHistoryItem = getResult(nextHand, nextOtherHand);
     setHand(nextHand);
-    setOtherHand(generateRandomHand());
+    setOtherHand(nextOtherHand);
+    setGameHistory([...gameHistory, nextHistoryItem]);
   };
 
   const handleClearClick = () => {
-    setHand('rock');
-    setOtherHand('rock');
+    setHand(INITIAL_VALUE);
+    setOtherHand(INITIAL_VALUE);
+    setGameHistory([]);
   };
 
   return (
     <div>
       <Button onClick={handleClearClick}>처음부터</Button>
-      <p>{getResult(hand, otherHand)}</p>
       <div>
         <HandIcon value={hand} />
         VS
         <HandIcon value={otherHand} />
       </div>
+      <p>승부 기록: {gameHistory.join(', ')}</p>
       <div>
         <HandButton value="rock" onClick={handleButtonClick} />
         <HandButton value="scissor" onClick={handleButtonClick} />
