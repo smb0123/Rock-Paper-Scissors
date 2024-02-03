@@ -1,8 +1,16 @@
-// 여기에 코드를 작성하세요
-import dice from './assets/rock.svg';
+import rockImg from './assets/rock.svg';
+import scissorImg from './assets/scissor.svg';
+import paperImg from './assets/paper.svg';
 
-function HandIcon() {
-  return <img src={dice}/>
+const image = {
+  rock: rockImg,
+  scissor: scissorImg,
+  paper: paperImg,
+};
+
+function HandIcon({value}) {
+  const src = image[value];
+  return <img src={src} alt={value} />;
 }
 
 export default HandIcon;
